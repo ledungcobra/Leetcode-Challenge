@@ -37,11 +37,67 @@ public class BitAlgorithm {
             }
             index++;
         }
-        return  index + 1;
+        return index + 1;
+    }
+
+    public static int getNthBit(int number, int i) {
+        return number >> i & 1;
+    }
+
+    public static int getNBitUsingMask(int number, int i) {
+        int mask = 1 << i;
+        return (number & mask) > 0 ? 1 : 0;
+    }
+
+    public static int clearBit(int number, int i) {
+        int mask = ~(1 << i);
+        return number & mask;
+    }
+
+    public static int setBit(int number, int i) {
+        int mask = 1 << i;
+        return number | mask;
+    }
+
+    public static int updateIthBit(int number, int i, int v) {
+        int result = clearBit(number, i);
+        int mask = (v << i);
+        return result | mask;
+    }
+
+    public static int clearLastIBit(int number, int i) {
+        int result = number;
+        for (int r = 0; r < i; r++) {
+            result &= ~(1 << r);
+        }
+        return result;
+    }
+
+    public static int clearLastBitV2(int number, int i) {
+        int mask = ~0 << i;
+        return number & mask;
+    }
+
+    public static int clearRangeBit(int number, int i, int j) {
+        int mask1 = -1 << j + 1;
+        int mask2 = 1 << i - 1;
+        int mask = mask1 | mask2;
+        return number & mask;
+    }
+
+    public static int replaceBits(int original, int replacement, int start, int end) {
+        original = clearRangeBit(original, start, end);
+        int countBit = end - start + 1;
+        replacement &= ~(-1 << countBit);
+        replacement <<= start;
+        return original | replacement;
     }
 
     public static void main(String[] args) {
-        System.out.println("Right most difference " + rightMostDifferentBit(11, 9));
-        System.out.println("Right most difference " + rightMostDifferentBit(52, 4));
+        int original = 1111;
+        int replacement = 12;
+        System.out.println(Integer.toBinaryString(original));
+        System.out.println(Integer.toBinaryString(replacement));
+        System.out.println(Integer.toBinaryString(replaceBits(original,replacement,1,3)));
     }
 }
